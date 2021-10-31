@@ -108,10 +108,14 @@ const validateToUpdateUser = (data) =>{
         errors.birthDate = 'Birth Date is invalid'
     }
     
-    if(data.password === '' || !data.password) {
-        errors.password = 'Password is required'
-    }else if(!validatePassword(data.password)){
-        errors.password = 'Password is invalid'
+    if(data.password){
+        if(!validatePassword(data.password)){
+            errors.password = 'Password is invalid'
+        }else if(!validatePassword(data.newPassword)){
+            errors.password = 'New password is invalid'
+        }else if(data.password !== data.newPassword){
+            errors.passwordConfirm = 'Passwords not matched'
+        }
     }
     
     return {

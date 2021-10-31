@@ -13,7 +13,12 @@ const sanitizerProfile = (body) => {
 }
 
 const sanitizerUser = (body) => {
-    const bodySanitized = _.pick(body, ['firstName', 'lastName', 'birthDate', 'password']);
+    
+    if(!body.password || body.password === ''){
+        const bodySanitized = _.pick(body, ['firstName', 'lastName', 'birthDate']);
+        return bodySanitized;
+    }
+    const bodySanitized = _.pick(body, ['firstName', 'lastName', 'birthDate', 'password', 'newpassword']);
     return bodySanitized;
 }
 
