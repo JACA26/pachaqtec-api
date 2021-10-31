@@ -1,0 +1,29 @@
+{
+    "name": "pachaqtec",
+    "version": "1.0.0",
+    "description": "",
+    "engines": {
+        "node": "15.0.1"
+    },
+    "main": "index.js",
+    "scripts": {
+        "start": "node server/server.js",
+        "dev": "nodemon server/server.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "bcrypt": "^5.0.1",
+        "body-parser": "^1.18.2",
+        "cors": "^2.8.5",
+        "email-validator": "^2.0.4",
+        "express": "^4.16.2",
+        "express-fileupload": "^1.2.0",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^5.0.9",
+        "mongoose-unique-validator": "^2.0.0",
+        "password-validator": "^5.1.2",
+        "underscore": "^1.13.1"
+    },
+    "devDependencies": {}
+}
