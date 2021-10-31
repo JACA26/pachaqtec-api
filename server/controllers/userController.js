@@ -57,38 +57,38 @@ const getOneAllUserData = async (req, res) => {
     }
 }
 
-const getOneUserToEdit = async (req, res) => {
+// const getOneUserToEdit = async (req, res) => {
     
-    if(!req.params.id ){
-        return res.status(400).json({
-            ok: false,
-            message: "No se ha enviado el id del usuario"
-        });
-    }
+//     if(!req.params.id ){
+//         return res.status(400).json({
+//             ok: false,
+//             message: "No se ha enviado el id del usuario"
+//         });
+//     }
     
-    const id = req.params.id;
+//     const id = req.params.id;
     
-    try {
-        const user = await Usuario.findById(id,'firstName lastName birthDate password ');
-        if(!user){
-            return res.status(400).json({
-                ok: false,
-                message: "Usuario no encontrado"
-            });
-        }
+//     try {
+//         const user = await Usuario.findById(id,'firstName lastName birthDate password ');
+//         if(!user){
+//             return res.status(400).json({
+//                 ok: false,
+//                 message: "Usuario no encontrado"
+//             });
+//         }
         
-        return res.status(200).json({
-            ok: true,
-            user,
-        });
+//         return res.status(200).json({
+//             ok: true,
+//             user,
+//         });
         
-    } catch (error) {
-        return res.status(500).json({
-            message: "Error al obtener usuario",
-            error
-        });
-    }
-}
+//     } catch (error) {
+//         return res.status(500).json({
+//             message: "Error al obtener usuario",
+//             error
+//         });
+//     }
+// }
 
 const createUser = async (req, res) => {
     

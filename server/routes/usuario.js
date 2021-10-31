@@ -13,7 +13,7 @@ router.get('/users', verificarToken, getUsers);
 
 router.get('/users/:id', verificarToken, getOneAllUserData);
 
-router.get('/users/edit/:id', verificarToken, getOneUserToEdit);
+// router.get('/users/edit/:id', verificarToken, getOneUserToEdit);
 
 router.post('/users', createUser);
 
