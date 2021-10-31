@@ -11,6 +11,66 @@ const { validateFormData, validateToUpdateUser, validateToUpdateProfile } = requ
 //users
 
 
+
+const getOneAllUserData = async (req, res) => {
+    
+    if(!req.params.id ){
+        return res.status(400).json({
+            ok: false,
+            message: "No se ha enviado el id del usuario"
+        });
+    }
+    
+    const id = req.params.id;
+    
+    try {
+        const user = await Usuario.findById(id);
+        return res.status(200).json({
+            ok: true,
+            user,
+        });
+        
+    } catch (error) {
+        return res.status(500).json({
+            message: "Error al obtener usuario",
+            error
+        });
+    }
+}
+
+const getOneUserToEdit = async (req, res) => {
+    
+    if(!req.params.id ){
+        return res.status(400).json({
+            ok: false,
+            message: "No se ha enviado el id del usuario"
+        });
+    }
+    
+    const id = req.params.id;
+    
+    try {
+        const user = await Usuario.findById(id,'firstName lastName birthDate password ');
+        if(!user){
+            return res.status(400).json({
+                ok: false,
+                message: "Usuario no encontrado"
+            });
+        }
+        
+        return res.status(200).json({
+            ok: true,
+            user,
+        });
+        
+    } catch (error) {
+        return res.status(500).json({
+            message: "Error al obtener usuario",
+            error
+        });
+    }
+}
+
 const createUser = async (req, res) => {
     
     if(isEmpty(req.body)){
@@ -63,8 +123,48 @@ const createUser = async (req, res) => {
     }
 }
 
+const updateUser = async (req, res) => {
+    
+    if(req.body = {}){
+        return res.status(400).json({
+            ok: false,
+            err: {
+                message: 'No se recibieron datos'
+            }
+        });
+    }
+    
+    const id = req.params.id;
+    const body = sanitizerUser(req.body);
+    const { errors, isValid } = validateToUpdateUser(body);
+    
+    if (!isValid) {
+        return res.status(400).json({
+            ok: false,
+            errors
+        });
+    }
+    
+    try {
+        const user = await Usuario.findByIdAndUpdate(id, body, { new: true });
+        return res.status(200).json({
+            ok: true,
+            user,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: "Error al actualizar usuario",
+            error
+        });
+    }
+}
+
+
 
 
 module.exports = {
+    getOneAllUserData,
+    getOneUserToEdit,
     createUser,
+    updateUser,
 }
