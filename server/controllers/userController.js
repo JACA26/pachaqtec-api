@@ -10,6 +10,26 @@ const { validateFormData, validateToUpdateUser, validateToUpdateProfile } = requ
 
 //users
 
+const getUsers = async (req, res) => {
+    
+    
+    let limit = req.query.limit || 50;
+    limit = Number(limit);
+    
+    try {
+        const users = await Usuario.find({state: true}).limit(limit);
+        return res.status(200).json({
+            ok: true,
+            users,
+        });
+        
+    } catch (error) {
+        return res.status(500).json({
+            message: "Error al obtener usuarios",
+            error
+        });
+    }
+};
 
 const getOneAllUserData = async (req, res) => {
     
@@ -159,6 +179,73 @@ const updateUser = async (req, res) => {
 }
 
 
+const deleteUser = async (req, res) => {
+    
+    if(!req.params.id ){
+        return res.status(400).json({
+            ok: false,
+            err: {
+                message: 'Id invalid'
+            }
+        });
+    }
+    
+    const id = req.params.id;
+    
+    let cambiaEstado = {
+        state: false
+    };
+    
+    try {
+        // Usuario.findByIdAndRemove
+        const userDelete = await Usuario.findByIdAndUpdate(id, cambiaEstado, { new: true });
+        
+        if (!userDelete) {
+            return res.status(400).json({
+                ok: false,
+                err: {
+                    message: 'Usuario no encontrado'
+                }
+            });
+        }
+        
+        return res.status(200).json({
+            ok: true,
+            message: 'Usuario eliminado',
+        });
+    } catch (error) {
+        
+        return res.status(500).json({
+            message: "Error al eliminar usuario",
+            error
+        });
+    }
+}
+
+//profiles
+
+const getProfileUsers = async (req, res) => {
+    
+    let limit = req.query.limit || 50;
+    limit = Number(limit);
+    
+    try {
+        
+        const usersProfiles = await Usuario.find({state: true}, '_id firstName lastName description speciality campus phone email').limit(limit);
+        return res.status(200).json({
+            ok: true,
+            profiles: usersProfiles
+        });
+            
+    } catch (error) {
+        return res.status(500).json({
+            message: "Error al obtener perfiles",
+            error
+        });
+    }
+    
+}
+
 
 const updateProfile = async(req, res) =>{
     
@@ -200,9 +287,12 @@ const updateProfile = async(req, res) =>{
 
 
 module.exports = {
+    getUsers,
+    getProfileUsers,
     getOneAllUserData,
     getOneUserToEdit,
     createUser,
     updateUser,
     updateProfile,
+    deleteUser,
 }

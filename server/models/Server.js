@@ -47,7 +47,7 @@ class Server {
 		//use routes
 		this.app.use("/api", require("../routes/index"));
         
-		//validate invalid routes
+		//redirect invalid routes
 		this.app.use("/*", (req, res) => {
 			res.status(404).sendFile(path.join(this.public, '404.html'));
 		});
