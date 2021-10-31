@@ -11,7 +11,6 @@ const { validateFormData, validateToUpdateUser, validateToUpdateProfile } = requ
 //users
 
 
-
 const getOneAllUserData = async (req, res) => {
     
     if(!req.params.id ){
@@ -161,10 +160,49 @@ const updateUser = async (req, res) => {
 
 
 
+const updateProfile = async(req, res) =>{
+    
+    if(req.body = {}){
+        return res.status(400).json({
+            ok: false,
+            err: {
+                message: 'No se recibieron datos'
+            }
+        });
+    }
+    
+    const id = req.params.id;
+    const body = sanitizerProfile(req.body);
+    const { errors, isValid } = validateToUpdateProfile(body);
+    
+    if (!isValid) {
+        return res.status(400).json({
+            ok: false,
+            errors
+        });
+    }
+    
+    try {
+        const user = await Usuario.findByIdAndUpdate(id, body, { new: true });
+        return res.status(200).json({
+            ok: true,
+            user,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: "Error al actualizar perfil",
+            error
+        });
+    }
+}
+
+
+
 
 module.exports = {
     getOneAllUserData,
     getOneUserToEdit,
     createUser,
     updateUser,
+    updateProfile,
 }
